@@ -16,7 +16,7 @@ namespace BookRecomendationWebApp
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new {id = UrlParameter.Optional }
+                defaults: new { controller = "RecomendBook", action = "DisplayResultsUsingWebAPI", id = UrlParameter.Optional }
             );
         }
     }

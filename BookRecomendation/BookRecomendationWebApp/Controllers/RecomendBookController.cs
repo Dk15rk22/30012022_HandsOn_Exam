@@ -15,6 +15,11 @@ namespace BookRecomendationWebApp.Controllers
     //DO NOT MODIFY THE METHOD NAMES : Adding of parameters / changing the return types of the given methods may be required.
     public class RecomendBookController : Controller
     {
+        BookRecomendationBL blObj;
+        public RecomendBookController()
+        {
+            blObj = new BookRecomendationBL();
+        }
         // GET: RecomendBook
         public ActionResult Index()
         {
@@ -22,34 +27,12 @@ namespace BookRecomendationWebApp.Controllers
         }
 
 
-        [HttpPost]
-        public void AddReviews(BookViewModel fromUI)
+        [HttpGet]
+        public ActionResult AddReviews()
         {
             try
             {
-                if (fromUI != null)
-                {
-                    BookDTO NewProd = new BookDTO();
-                    NewProd.book_isbn = fromUI.book_isbn;
-                    NewProd.title = fromUI.title;
-                    NewProd.review = fromUI.review;
-                    NewProd.author_id = fromUI.author_id;
-                    int newBookId = 0;
-                    int retVal = blObj.Addnewprod(NewProd, out newBookId);
-                    if (retVal == 1)
-                    {
-                        return RedirectToAction("DisplayAllProduct");
-                    }
-                    else
-                    {
-                        return View("Error");
-                    }
-                    //return RedirectToAction("Success");
-                }
-                else
-                {
-                    return View("Error");
-                }
+                return View();
             }
             catch (Exception)
             {
@@ -57,28 +40,22 @@ namespace BookRecomendationWebApp.Controllers
             }
         }
         
-        public ViewResult DisplayResultsUsingWebAPI()
+        public ActionResult DisplayResultsUsingWebAPI()
         {
             try
             {
-                string baseURL = "http://localhost:55577/";
-                string routeURL = @"api/Book/ShowReviewsForBook";
-                var apiClient = new HttpClient();
-                apiClient.BaseAddress = new Uri(baseURL);
-                apiClient.DefaultRequestHeaders.Clear();
-                apiClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage apiResponse = await apiClient.GetAsync(routeURL);
-                if (apiResponse.IsSuccessStatusCode)
+                List<BookDTO> lstProduct = blObj.ShowReviewsForBook();
+                List<BookViewModel> lstDeptModel = new List<BookViewModel>();
+                foreach (var product in lstProduct)
                 {
-                    var result = apiResponse.Content.ReadAsStringAsync().Result;
-                    List<ProductViewModel> lstAllProds = new List<ProductViewModel>();
-                    var finalResult = JsonConvert.DeserializeObject<List<ProductViewModel>>(result);
-                    return View(finalResult);
+                    BookViewModel newObj = new BookViewModel();
+                    newObj.author_id = product.author_id;
+                    newObj.book_isbn = product.book_isbn;
+                    newObj.title = product.title;
+                    newObj.review = product.review;
+                    lstDeptModel.Add(newObj);
                 }
-                else
-                {
-                    return View("Error");
-                }
+                return View(lstDeptModel);
             }
             catch (Exception)
             {
