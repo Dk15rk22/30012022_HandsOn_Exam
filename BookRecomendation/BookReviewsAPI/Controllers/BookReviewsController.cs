@@ -17,6 +17,7 @@ namespace BookReviewsAPI.Controllers
         [HttpGet]
         public void GetRatingsForBook()
         {
+
         }
 
     }
