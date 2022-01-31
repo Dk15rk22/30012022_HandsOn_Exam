@@ -35,7 +35,7 @@ namespace BookRecomendationWebApp.Models
         [RegularExpression(@"^[0-9\s]+$", ErrorMessage = "Author Id can have only Digits")]
         [StringLength(50, MinimumLength = 5, ErrorMessage = "Please Enter Minimum 5 Digits")]
 
-        public string author_id { get; set; }
+        public int author_id { get; set; }
 
 }
 }

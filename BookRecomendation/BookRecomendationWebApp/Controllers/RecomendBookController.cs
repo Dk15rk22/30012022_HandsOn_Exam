@@ -39,7 +39,7 @@ namespace BookRecomendationWebApp.Controllers
                 return View("Error");
             }
         }
-        
+
         public ActionResult DisplayResultsUsingWebAPI()
         {
             try
@@ -49,10 +49,10 @@ namespace BookRecomendationWebApp.Controllers
                 foreach (var product in lstProduct)
                 {
                     BookViewModel newObj = new BookViewModel();
-                    newObj.author_id = product.author_id;
                     newObj.book_isbn = product.book_isbn;
                     newObj.title = product.title;
                     newObj.review = product.review;
+                    newObj.author_id = product.author_id;
                     lstDeptModel.Add(newObj);
                 }
                 return View(lstDeptModel);
@@ -61,5 +61,6 @@ namespace BookRecomendationWebApp.Controllers
             {
                 return View("Error");
             }
+        }
     }
 }
