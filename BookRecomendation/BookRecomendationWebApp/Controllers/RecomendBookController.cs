@@ -22,12 +22,41 @@ namespace BookRecomendationWebApp.Controllers
         }
 
 
-
-        public void AddReviews()
+        [HttpPost]
+        public void AddReviews(BookViewModel fromUI)
         {
-
+            try
+            {
+                if (fromUI != null)
+                {
+                    BookDTO NewProd = new BookDTO();
+                    NewProd.book_isbn = fromUI.book_isbn;
+                    NewProd.title = fromUI.title;
+                    NewProd.review = fromUI.review;
+                    NewProd.author_id = fromUI.author_id;
+                    int newBookId = 0;
+                    int retVal = blObj.Addnewprod(NewProd, out newBookId);
+                    if (retVal == 1)
+                    {
+                        return RedirectToAction("DisplayAllProduct");
+                    }
+                    else
+                    {
+                        return View("Error");
+                    }
+                    //return RedirectToAction("Success");
+                }
+                else
+                {
+                    return View("Error");
+                }
+            }
+            catch (Exception)
+            {
+                return View("Error");
+            }
         }
-
+        
         public ViewResult DisplayResultsUsingWebAPI()
         {
             try

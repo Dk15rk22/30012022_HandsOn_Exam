@@ -25,9 +25,10 @@ namespace BookRecomendationBusinessLayer
         }
 
 
-        public void AddReviewForBook()
+        public int AddReviewForBook(BookDTO newbookobj, out int newbookid)
         {
-          
+            BookRecomendationDAL dalObj = new BookRecomendationDAL();
+            return dalObj.SaveReviewForBookToDB(newbookobj, out newbookid);
         }
       
     }

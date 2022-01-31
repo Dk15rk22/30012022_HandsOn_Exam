@@ -51,9 +51,41 @@ namespace BookRecomendationDataAccessLayer
             }
         }
 
-        public void SaveReviewForBookToDB()
+        public int SaveReviewForBookToDB(BookDTO bookobj, out int bookid)
         {
+            try
+            {
+                cmdObj = new SqlCommand();
+                cmdObj.CommandText = @"uspAddNewProd";
+                cmdObj.CommandType = System.Data.CommandType.StoredProcedure;
+                cmdObj.Connection = conObj;
+                cmdObj.Parameters.AddWithValue("@book_isbn", bookobj.book_isbn);
+                cmdObj.Parameters.AddWithValue("@title", bookobj.title);
+                cmdObj.Parameters.AddWithValue("@review", bookobj.review);
+                cmdObj.Parameters.AddWithValue("@author_id", bookobj.author_id);
+                SqlParameter returnvalue = new SqlParameter();
+                returnvalue.Direction = ParameterDirection.ReturnValue;
+                returnvalue.SqlDbType = SqlDbType.Int;
+                cmdObj.Parameters.Add(returnvalue);
+                SqlParameter outputValue = new SqlParameter();
+                outputValue.Direction = ParameterDirection.Output;
+                outputValue.SqlDbType = SqlDbType.Int;
+                outputValue.ParameterName = "@author_id";
+                cmdObj.Parameters.Add(outputValue);
+                conObj.Open();
+                cmdObj.ExecuteNonQuery();
+                bookid = Convert.ToInt32(outputValue.Value);
+                return Convert.ToInt32(returnvalue.Value);
 
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                conObj.Close();
+            }
         }
 
 }
