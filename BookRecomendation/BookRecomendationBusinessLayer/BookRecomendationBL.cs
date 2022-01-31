@@ -17,9 +17,11 @@ namespace BookRecomendationBusinessLayer
             dalObj = new BookRecomendationDAL();
         }
 
-        public void ShowReviewsForBook()
+        public List<BookDTO> ShowReviewsForBook()
         {
-           
+            BookRecomendationDAL dalObj = new BookRecomendationDAL();
+               List<BookDTO> lstOfDep = dalObj.FetchReviewsForBook();
+               return lstOfDep;
         }
 
 

@@ -12,7 +12,11 @@ namespace BookReviewsAPI.Controllers
     //DO NOT MODIFY THE METHOD NAMES : Adding of parameters / changing the return types of the given methods may be required.
     public class BookReviewsController : ApiController
     {
-
+        BookRecomendationBL blObj;
+        public BookReviewsController()
+        {
+            blObj = new BookRecomendationBL();
+        }
 
         [HttpGet]
         public void GetRatingsForBook()
