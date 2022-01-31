@@ -28,8 +28,32 @@ namespace BookRecomendationWebApp.Controllers
 
         }
 
-        public void DisplayResultsUsingWebAPI()
+        public ViewResult DisplayResultsUsingWebAPI()
         {
-        }
+            try
+            {
+                string baseURL = "http://localhost:55577/";
+                string routeURL = @"api/Book/ShowReviewsForBook";
+                var apiClient = new HttpClient();
+                apiClient.BaseAddress = new Uri(baseURL);
+                apiClient.DefaultRequestHeaders.Clear();
+                apiClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                HttpResponseMessage apiResponse = await apiClient.GetAsync(routeURL);
+                if (apiResponse.IsSuccessStatusCode)
+                {
+                    var result = apiResponse.Content.ReadAsStringAsync().Result;
+                    List<ProductViewModel> lstAllProds = new List<ProductViewModel>();
+                    var finalResult = JsonConvert.DeserializeObject<List<ProductViewModel>>(result);
+                    return View(finalResult);
+                }
+                else
+                {
+                    return View("Error");
+                }
+            }
+            catch (Exception)
+            {
+                return View("Error");
+            }
     }
 }
